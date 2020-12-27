@@ -25,10 +25,6 @@ app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.get(`/${process.env.MS_PATH}/health/`, (req, res, next) => {
-  res.json({ message: `${process.env.MS_NAME} is up and running!` });
-})
-
 app.use(router);
 
 export default app;
