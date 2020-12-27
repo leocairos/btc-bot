@@ -8,14 +8,14 @@ interface IMailPar {
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
-  secure: false, // upgrade later with STARTTLS
+  secure: true, // upgrade later with STARTTLS
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   }
 });
 
-const sendMail = (parms: IMailPar) => {
+const sendMail = async (parms: IMailPar) => {
 
   const { subject, html } = parms;
   const mailOptions = {
