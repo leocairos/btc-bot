@@ -68,7 +68,7 @@ export const checkAndAlert = async (originalTicker: IOriginalTicker) => {
   const alertTop = ((variacao >= 0) && (variacao >= limiteVarTop * 100));
   const alertDow = ((variacao < 0) && (variacao <= limiteVarDow * -100));
 
-  console.log(variacao, limiteVarTop, limiteVarDow, (variacao >= limiteVarTop), (variacao <= limiteVarDow * -1))
+  //console.log(variacao, limiteVarTop, limiteVarDow, (variacao >= limiteVarTop), (variacao <= limiteVarDow * -1))
   const subject = alertTop
     ? 'BTC-Bot Alert (TOP)'
     : alertDow
