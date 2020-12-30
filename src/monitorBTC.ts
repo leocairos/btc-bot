@@ -35,7 +35,7 @@ export const formatter = new Intl.NumberFormat('pt-BR', {
   minimumFractionDigits: 2
 })
 
-const htmlMessage = (parms: IOriginalTicker) => {
+export const dataTicker = (parms: IOriginalTicker) => {
   const { high, low, last, date } = parms;
   const maior = formatter.format(Number(high));
   const menor = formatter.format(Number(low));
@@ -43,6 +43,12 @@ const htmlMessage = (parms: IOriginalTicker) => {
   const tickerDate = new Date(date * 1000).toUTCString();
 
   const variacao = calculateVariation(Number(last));
+
+  return { maior, menor, ultima, tickerDate, variacao };
+}
+
+const htmlMessage = (parms: IOriginalTicker) => {
+  const { maior, menor, ultima, tickerDate, variacao } = dataTicker(parms);
 
   let html = `${tickerDate} <h3> Bitcoin (BTC):</h3>`
   html += `<ul><li><strong>Ultima cotação ${ultima}</strong></li>`;
@@ -58,7 +64,7 @@ const htmlMessage = (parms: IOriginalTicker) => {
   return html;
 }
 
-export const checkAndAlert = async (originalTicker: IOriginalTicker) => {
+const checkAndAlert = async (originalTicker: IOriginalTicker) => {
 
   const variacao = calculateVariation(Number(originalTicker.last));
   console.log(`   Base: ${formatter.format(Number(BTCBase))} Variação ${(variacao).toFixed(2)}%`)
@@ -69,16 +75,29 @@ export const checkAndAlert = async (originalTicker: IOriginalTicker) => {
   const alertDow = ((variacao < 0) && (variacao <= limiteVarDow * -100));
 
   //console.log(variacao, limiteVarTop, limiteVarDow, (variacao >= limiteVarTop), (variacao <= limiteVarDow * -1))
-  const subject = alertTop
+  let subject = alertTop
     ? 'BTC-Bot Alert (TOP)'
     : alertDow
       ? 'BTC-Bot Alert (DOW)'
       : 'BTC-Bot Alert';
+  const inDEV = process.env.NODE_ENV === 'development';
+  if (inDEV)
+    subject = subject + ' - by Env Dev'
 
   if (alertTop || alertDow) {
     const html = htmlMessage(originalTicker);
     await sendMail({ subject, html })
   }
+}
+
+export const getTicker = async () => {
+  //Retorna informações com o resumo das últimas 24 horas de negociações.
+  const { data } = await axios
+    .get('https://www.mercadobitcoin.net/api/BTC/ticker/');
+  const originalTicker = data.ticker as IOriginalTicker;
+  const tickerDate = new Date(originalTicker.date * 1000).toUTCString();
+  console.log('\nCheck in ', tickerDate, 'LastValue: ', formatter.format(Number(originalTicker.last)));
+  return originalTicker;
 }
 
 const monitorBTC = () => {
@@ -92,17 +111,8 @@ const monitorBTC = () => {
           isRunning = true;
           setTimeout(async () => {
             //Retorna informações com o resumo das últimas 24 horas de negociações.
-            const { data } = await axios
-              .get('https://www.mercadobitcoin.net/api/BTC/ticker/');
-            const originalTicker = data.ticker as IOriginalTicker;
-            const tickerDate = new Date(originalTicker.date * 1000).toUTCString();
-            console.log('\nCheck in ', tickerDate, 'LastValue: ', formatter.format(Number(originalTicker.last)));
-
+            const originalTicker = await getTicker();
             await checkAndAlert(originalTicker);
-            /*if (variacaoInf * -1 >= limiteInf) { // identificar queda maior que X%
-              const html = htmlMessage(originalTicker);
-              await sendMail({ subject: 'BTC-Bot Alert', html })
-            }*/
             isRunning = false;
           }, 1000);
         }
