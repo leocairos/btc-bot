@@ -1,13 +1,36 @@
 import { CronJob } from 'cron';
 import axios from 'axios';
+import { config } from './config';
 
 import sendMail from './sendMail';
+import { insertData } from './model';
 
-const intervalToCheck = parseInt(`${process.env.INTERVAL_TO_CHECK}`);
+var intervalToCheck: number;
+var limiteVarDow: number;
+var limiteVarTop: number;
+var BTCBase: number;
+var mailTo: string;
 
-const limiteVarDow = Number(`${process.env.BTC_LIMIT_VAR_DOWN}`) / 100;
-const limiteVarTop = Number(`${process.env.BTC_LIMIT_VAR_TOP}`) / 100;
-const BTCBase = Number(`${process.env.BTC_BASE_IN_BRL}`);
+const getPreferences = async () => {
+  try {
+    const configs = await config();
+
+    intervalToCheck = configs.intervalToCheck;
+    limiteVarDow = configs.downLimit / 100;
+    limiteVarTop = configs.topLimit / 100;
+    BTCBase = configs.btcBase;
+    mailTo = configs.mailTo;
+
+  } catch (error) {
+    console.log(`${error}`);
+  }
+}
+
+// const intervalToCheck = parseInt(`${process.env.INTERVAL_TO_CHECK}`);
+
+// const limiteVarDow = Number(`${process.env.BTC_LIMIT_VAR_DOWN}`) / 100;
+// const limiteVarTop = Number(`${process.env.BTC_LIMIT_VAR_TOP}`) / 100;
+// const BTCBase = Number(`${process.env.BTC_BASE_IN_BRL}`);
 
 const calculateVariation = (last: number) => {
   const variation = (last / BTCBase);
@@ -67,7 +90,7 @@ const htmlMessage = (parms: IOriginalTicker) => {
 const checkAndAlert = async (originalTicker: IOriginalTicker) => {
 
   const variacao = calculateVariation(Number(originalTicker.last));
-  console.log(`   Base: ${formatter.format(Number(BTCBase))} Variação ${(variacao).toFixed(2)}%`)
+  console.log(`   Base: ${formatter.format(Number(BTCBase))} Variação ${(variacao).toFixed(3)}%`)
   console.log(`   Limite Top: ${(limiteVarTop * 100).toFixed(2)}%.`);
   console.log(`   Limite Dow: ${(limiteVarDow * 100).toFixed(2)}%.`);
 
@@ -80,6 +103,19 @@ const checkAndAlert = async (originalTicker: IOriginalTicker) => {
     : alertDow
       ? 'BTC-Bot Alert (DOW)'
       : 'BTC-Bot Alert';
+
+  if (alertTop) {
+    const newPref = {
+      interval: intervalToCheck,
+      topLimit: 5,//limiteVarTop * 100,
+      downLimit: 3,//limiteVarDow * 100,
+      email: mailTo,
+      btcBase: BTCBase * (1 + variacao / 100)
+    }
+    await insertData(newPref.interval, newPref.email,
+      newPref.topLimit, newPref.downLimit, newPref.btcBase)
+  }
+
   const inDEV = process.env.NODE_ENV === 'development';
   if (inDEV)
     subject = subject + ' - by Env Dev'
@@ -101,17 +137,18 @@ export const getTicker = async () => {
 }
 
 const monitorBTC = () => {
-  console.log(`Every ${intervalToCheck} seconds check BTC value.`);
+  console.log(`Every ${intervalToCheck} minutes check BTC value.`);
   let isRunning = false;
   try {
     const job = new CronJob(
-      `*/${process.env.INTERVAL_TO_CHECK} * * * * *`,
+      `*/${intervalToCheck} * * * *`,
       () => {
         if (!isRunning) {
           isRunning = true;
           setTimeout(async () => {
             //Retorna informações com o resumo das últimas 24 horas de negociações.
             const originalTicker = await getTicker();
+            await getPreferences();
             await checkAndAlert(originalTicker);
             isRunning = false;
           }, 1000);
@@ -122,5 +159,9 @@ const monitorBTC = () => {
     console.log(`Finished with error: ${err}`);
   }
 }
+
+(async () => {
+  await getPreferences()
+})();
 
 export default monitorBTC;

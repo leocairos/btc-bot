@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { config } from './config';
 
 interface IMailPar {
   subject: string;
@@ -18,9 +19,10 @@ const transporter = nodemailer.createTransport({
 const sendMail = async (parms: IMailPar) => {
 
   const { subject, html } = parms;
+  const configs = await config();
   const mailOptions = {
     from: process.env.SMTP_USER,
-    to: process.env.MAIL_TO,
+    to: configs.mailTo,
     subject,
     html
   };
