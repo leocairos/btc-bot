@@ -4,7 +4,8 @@ export const config = async (): Promise<IPreference> => {
   const lastData = await getLastData();
   if (lastData?.lReturn) {
     return {
-      intervalToCheck: lastData.rows[0].intervalToCheck,
+      //intervalToCheck: lastData.rows[0].intervalToCheck,
+      intervalToCheck: parseInt(`${process.env.INTERVAL_TO_CHECK}`),
       mailTo: lastData.rows[0].mailTo,
       topLimit: lastData.rows[0].topLimit,
       downLimit: lastData.rows[0].downLimit,

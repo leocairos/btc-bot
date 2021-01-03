@@ -14,7 +14,7 @@ import { getLastData, createDatabase } from './model';
 
     monitorBTC();
 
-    getLastData();
+    //getLastData();
 
   } catch (error) {
     console.log(`${error}`);

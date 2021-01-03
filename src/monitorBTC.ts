@@ -5,7 +5,7 @@ import { config } from './config';
 import sendMail from './sendMail';
 import { insertData } from './model';
 
-var intervalToCheck: number;
+//var intervalToCheck: number;
 var limiteVarDow: number;
 var limiteVarTop: number;
 var BTCBase: number;
@@ -15,7 +15,7 @@ const getPreferences = async () => {
   try {
     const configs = await config();
 
-    intervalToCheck = configs.intervalToCheck;
+    //intervalToCheck = configs.intervalToCheck;
     limiteVarDow = configs.downLimit / 100;
     limiteVarTop = configs.topLimit / 100;
     BTCBase = configs.btcBase;
@@ -26,7 +26,7 @@ const getPreferences = async () => {
   }
 }
 
-// const intervalToCheck = parseInt(`${process.env.INTERVAL_TO_CHECK}`);
+const intervalToCheck = parseInt(`${process.env.INTERVAL_TO_CHECK}`);
 
 // const limiteVarDow = Number(`${process.env.BTC_LIMIT_VAR_DOWN}`) / 100;
 // const limiteVarTop = Number(`${process.env.BTC_LIMIT_VAR_TOP}`) / 100;
