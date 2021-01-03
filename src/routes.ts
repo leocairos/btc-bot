@@ -4,6 +4,7 @@ import { formatter, dataTicker, getTicker } from './monitorBTC';
 
 import { insertData } from './model';
 import { config } from './config';
+import ensureKeyAuthorization from './ensureKeyAuthorization';
 
 const router = Router();
 
@@ -36,7 +37,7 @@ router.get('/btc-bot/health', async (req, res, next) => {
 
 });
 
-router.post('/btc-bot/preferences', async (req, res, next) => {
+router.post('/btc-bot/preferences', ensureKeyAuthorization, async (req, res, next) => {
   const { interval, topLimit, downLimit, email, btcBase } = req.body;
   const result = await insertData(interval, email, topLimit, downLimit, btcBase);
   return res.json(result);
