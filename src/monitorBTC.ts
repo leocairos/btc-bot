@@ -141,7 +141,7 @@ const monitorBTC = () => {
   let isRunning = false;
   try {
     const job = new CronJob(
-      `*/${intervalToCheck} * * * *`,
+      `*/${intervalToCheck} * * * * *`,
       () => {
         if (!isRunning) {
           isRunning = true;
