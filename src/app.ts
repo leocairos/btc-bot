@@ -4,6 +4,7 @@ import cors from 'cors';
 import logger from 'morgan';
 
 import router from './routes';
+import path from 'path';
 
 function getCorsOrigin() {
   const origin = process.env.CORS_ORIGIN;
@@ -24,6 +25,10 @@ app.use(logger('dev'));
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Configure Express to use EJS
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 app.use(router);
 

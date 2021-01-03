@@ -8,6 +8,33 @@ import ensureKeyAuthorization from './ensureKeyAuthorization';
 
 const router = Router();
 
+router.get('/btc-bot/preferences', async (req, res, next) => {
+  try {
+    const configs = await config();
+
+    const ticker = await getTicker();
+    const { maior, menor, ultima, tickerDate, variacao } = dataTicker(ticker);
+    const pref = {
+      message: `${process.env.MS_NAME} is up and running!`,
+      checkInterval: `Every ${configs.intervalToCheck} seconds`,
+      mailRecipient: `${(configs.mailTo)?.substring(0, 4)}***`,
+      downLimiteAlert: `${configs.downLimit}%`,
+      topLimiteAlert: `${configs.topLimit}%`,
+      BTCBase: `${formatter.format(Number(configs.btcBase))}`,
+      ticker: {
+        tickerDate,
+        high: maior,
+        low: menor,
+        last: ultima,
+        variation: `${variacao.toFixed(3)}%`
+      }
+    }
+    return res.render('preferences', { pref });
+  } catch (error) {
+    console.log(`${error}`);
+  }
+});
+
 router.get('/btc-bot/health', async (req, res, next) => {
   try {
     const configs = await config();
@@ -33,8 +60,6 @@ router.get('/btc-bot/health', async (req, res, next) => {
   } catch (error) {
     console.log(`${error}`);
   }
-
-
 });
 
 router.post('/btc-bot/preferences', ensureKeyAuthorization, async (req, res, next) => {
