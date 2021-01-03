@@ -16,7 +16,7 @@ router.get('/btc-bot/health', async (req, res, next) => {
     const { maior, menor, ultima, tickerDate, variacao } = dataTicker(ticker);
     res.json({
       message: `${process.env.MS_NAME} is up and running!`,
-      checkInterval: `Every ${configs.intervalToCheck} minutes`,
+      checkInterval: `Every ${configs.intervalToCheck} seconds`,
       mailRecipient: `${(configs.mailTo)?.substring(0, 4)}***`,
       downLimiteAlert: `${configs.downLimit}%`,
       topLimiteAlert: `${configs.topLimit}%`,

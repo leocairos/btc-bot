@@ -137,7 +137,7 @@ export const getTicker = async () => {
 }
 
 const monitorBTC = () => {
-  console.log(`Every ${intervalToCheck} minutes check BTC value.`);
+  console.log(`Every ${intervalToCheck} seconds check BTC value.`);
   let isRunning = false;
   try {
     const job = new CronJob(
