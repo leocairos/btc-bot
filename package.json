@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "directories": {
     "test": "test"
   },
   "scripts": {
     "copy-assets": "ts-node src/tools/copyAssets",
-    "start": "yarn copy-assets && tsc && ts-node -r dotenv/config -r tsconfig-paths/register ./dist/server.js",
-    "compile": "tsc && ts-node -r dotenv/config -r tsconfig-paths/register ./dist/server.js",
+    "start": "yarn copy-assets && tsc && ts-node -r dotenv/config -r tsconfig-paths/register --transpile-only ./dist/server.js",
+    "compile": "tsc && ts-node -r dotenv/config -r tsconfig-paths/register --transpile-only ./dist/server.js",
     "dev": "nodemon -e ts,json,ejs --ignore dist --exec \"npm run compile\"",
+    "dev:debug": "ts-node-dev -r dotenv/config -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node-modules src/server.ts",
     "test": "jest"
   },
   "keywords": [],
@@ -44,6 +46,7 @@
     "@types/shelljs": "^0.8.8",
     "@types/sqlite3": "^3.1.6",
     "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.1",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.1.2"
   }

@@ -1,6 +1,6 @@
 import app from "./app";
 import monitorBTC from './monitorBTC';
-import { getLastData, createDatabase } from './model';
+import { createDatabase } from './model';
 
 (async () => {
 
