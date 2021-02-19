@@ -16,17 +16,21 @@ router.get('/btc-bot/preferences', async (req, res, next) => {
     const { maior, menor, ultima, tickerDate, variacao } = dataTicker(ticker);
     const pref = {
       message: `${process.env.MS_NAME} is up and running!`,
-      checkInterval: `Every ${configs.intervalToCheck} seconds`,
+      //checkInterval: `Every ${configs.intervalToCheck} seconds`,
+      checkInterval: `${configs.intervalToCheck}`,
       mailRecipient: `${(configs.mailTo)?.substring(0, 4)}***`,
-      downLimiteAlert: `${configs.downLimit}%`,
-      topLimiteAlert: `${configs.topLimit}%`,
+      //mailRecipient: `${(configs.mailTo)}`,
+      //downLimiteAlert: `${configs.downLimit}%`,
+      downLimiteAlert: `${configs.downLimit}`,
+      //topLimiteAlert: `${configs.topLimit}%`,
+      topLimiteAlert: `${configs.topLimit}`,
       BTCBase: `${formatter.format(Number(configs.btcBase))}`,
+      variation: `${variacao.toFixed(3)}%`,
       ticker: {
         tickerDate,
         high: maior,
         low: menor,
         last: ultima,
-        variation: `${variacao.toFixed(3)}%`
       }
     }
     return res.render('preferences', { pref });

@@ -22,7 +22,7 @@ const getPreferences = async () => {
     mailTo = configs.mailTo;
 
   } catch (error) {
-    console.log(`${error}`);
+    console.log(`[getPreferences] Error:${error}`);
   }
 }
 

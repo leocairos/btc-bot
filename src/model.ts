@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
 
-const dbFile = './dbBTC.sqlite';
+const dbFile = './dbBTCbot.sqlite';
 
 async function openDb() {
   sqlite3.verbose();
@@ -37,7 +37,7 @@ const dbAction = async (action: string, sql: string, parms: Object[]) => {
           createdAt date
           )`;
         await db.run(sqlCreate);
-        console.log('Tables created...');
+        console.log('Tables created/updated...');
         lReturn = true;
         break;
       case 'insert':
@@ -60,12 +60,12 @@ const dbAction = async (action: string, sql: string, parms: Object[]) => {
         lReturn = true;
         break;
       default:
-        console.log(`Sorry, invalid action: ${action}.`);
+        console.log(`[dbAction] invalid action: ${action}.`);
     }
     await db.close();
     return { lReturn, rows };
   } catch (error) {
-    console.log('dbAction:', error);
+    console.log(`[dbAction] ${action} error: ${error}`);
   }
 }
 
@@ -83,21 +83,27 @@ export const createDatabase = async () => {
 }
 
 export const getLastData = async () => {
-  const res = await dbAction('get', `select 
-                                      id, intervalToCheck, mailTo, topLimit, 
-                                      downLimit, btcBase, createdAt
-                                    from preferences 
-                                    order by id desc LIMIT 1`, ['']);
+  try {
+    const res = await dbAction('get', `select 
+    id, intervalToCheck, mailTo, topLimit, 
+    downLimit, btcBase, createdAt
+  from preferences 
+  order by id desc LIMIT 1`, ['']);
 
-  return res;
+    return res;
+  } catch (err) {
+    console.log(`[getLastData] Finished with error: ${err}`);
+    return null;
+  }
+
 }
 
-const model = (async () => {
+/*const model = (async () => {
   try {
     await dbAction('create', '', ['']);
   } catch (error) {
-    console.log('main:', error);
+    console.log('[model] error:', error);
   }
 })
 
-export default model;
+export default model;*/

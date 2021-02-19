@@ -4,16 +4,116 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BTC-Bot</title>
+  <title>RDLSC BTC-Bot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  -->
 </head>
 
 <body>
   <div class="container">
-    <h1 class="header">BTC-Bot</h1>
-    <%= pref.message %>
+    <h1 class="header">RDLSC BTC-Bot</h1>
+    <p>
+      <%= pref.message %>
+    </p>
+
+
+    <form>
+      <div class="form-row">
+        <label for="mailRecipient" class="col-auto col-form-label">Mail Recipient</label>
+        <div class="form-group col-md-4">
+          <input type="text" class="form-control" id="mailRecipient" value=<%=pref.mailRecipient %>>
+        </div>
+
+        <label for="checkInterval" class="col-auto col-form-label">Check Interval</label>
+        <div class="form-group col-md-2">
+          <input type="number" class="form-control" id="checkInterval" min="1" max="59" value=<%=pref.checkInterval %>>
+        </div>
+      </div>
+
+      <div class="form-row">
+
+        <label for="BTCBase" class="col-auto col-form-label">BTC Base</label>
+        <div class="form-group col-md-3">
+          <input type="text" class="form-control" id="BTCBase" value=<%=pref.BTCBase %>>
+        </div>
+
+        <label for="downLimiteAlert" class="col-auto col-form-label">Down Limite Alert</label>
+        <div class="form-group col-md-1">
+          <input type="number" class="form-control" id="downLimiteAlert" min="1" max="99" value=<%=pref.downLimiteAlert
+            %>>
+        </div>
+
+        <label for="topLimiteAlert" class="col-auto col-form-label">Top Limite Alert</label>
+        <div class="form-group col-md-1">
+          <input type="number" class="form-control" id="topLimiteAlert" min="1" max="99" value=<%=pref.downLimiteAlert
+            %>>
+        </div>
+
+
+      </div>
+
+    </form>
+
+
+
+
+
+    <h3>
+      <strong> Variation: </strong>
+      <span class="badge badge-light">
+        <i class="material-icons">compare_arrows</i>
+        <%= pref.variation %>
+      </span>
+    </h3>
+
+
+
+    <h5>Ticker <span class="badge badge-light">
+
+        <%= pref.ticker.tickerDate %>
+      </span></h5>
+
+    <h5>
+      <span class="badge badge-danger">
+        <i class="material-icons">arrow_downward</i>
+        <%= pref.ticker.low %>
+      </span>
+
+      <span class="badge badge-success">
+        <i class="material-icons">arrow_upward</i>
+        <%= pref.ticker.high %>
+      </span>
+
+      <span class="badge badge-secondary">
+        <i class="material-icons">watch_later</i>
+        <%= pref.ticker.last %>
+      </span>
+
+
+    </h5>
+
+
+    <button type="button" class="btn btn-primary">Update</button>
+    <button type="button" class="btn btn-info">Reload</button>
+
+
   </div>
 </body>
 
