@@ -28,69 +28,20 @@
 
 <body>
   <div class="container">
-    <h1 class="header">RDLSC BTC-Bot</h1>
+    <h3 class="header">RDLSC BTC-Bot</h3>
     <p>
-      <%= pref.message %>
+      <i>
+        <%= pref.message %>
+      </i>
     </p>
 
-
-    <form>
-      <div class="form-row">
-        <label for="mailRecipient" class="col-auto col-form-label">Mail Recipient</label>
-        <div class="form-group col-md-4">
-          <input type="text" class="form-control" id="mailRecipient" value=<%=pref.mailRecipient %>>
-        </div>
-
-        <label for="checkInterval" class="col-auto col-form-label">Check Interval</label>
-        <div class="form-group col-md-2">
-          <input type="number" class="form-control" id="checkInterval" min="1" max="59" value=<%=pref.checkInterval %>>
-        </div>
-      </div>
-
-      <div class="form-row">
-
-        <label for="BTCBase" class="col-auto col-form-label">BTC Base</label>
-        <div class="form-group col-md-3">
-          <input type="text" class="form-control" id="BTCBase" value=<%=pref.BTCBase %>>
-        </div>
-
-        <label for="downLimiteAlert" class="col-auto col-form-label">Down Limite Alert</label>
-        <div class="form-group col-md-1">
-          <input type="number" class="form-control" id="downLimiteAlert" min="1" max="99" value=<%=pref.downLimiteAlert
-            %>>
-        </div>
-
-        <label for="topLimiteAlert" class="col-auto col-form-label">Top Limite Alert</label>
-        <div class="form-group col-md-1">
-          <input type="number" class="form-control" id="topLimiteAlert" min="1" max="99" value=<%=pref.downLimiteAlert
-            %>>
-        </div>
+    <strong>Ticker</strong>
+    <span class="badge badge-pill badge-light">
+      <%= pref.ticker.tickerDate %>
+    </span>
 
 
-      </div>
-
-    </form>
-
-
-
-
-
-    <h3>
-      <strong> Variation: </strong>
-      <span class="badge badge-light">
-        <i class="material-icons">compare_arrows</i>
-        <%= pref.variation %>
-      </span>
-    </h3>
-
-
-
-    <h5>Ticker <span class="badge badge-light">
-
-        <%= pref.ticker.tickerDate %>
-      </span></h5>
-
-    <h5>
+    <h6>
       <span class="badge badge-danger">
         <i class="material-icons">arrow_downward</i>
         <%= pref.ticker.low %>
@@ -106,13 +57,65 @@
         <%= pref.ticker.last %>
       </span>
 
+    </h6>
 
-    </h5>
+    <hr>
 
+    <p>
+      <strong> Base Variation: </strong>
+      <span class="badge badge-light">
+        <i class="material-icons">compare_arrows</i>
+        <%= pref.variation %>
 
-    <button type="button" class="btn btn-primary">Update</button>
-    <button type="button" class="btn btn-info">Reload</button>
+      </span>
+      <span class="badge badge-light">
+        <%=pref.variationValue %>
+      </span>
 
+    </p>
+
+    <form>
+      <div class="form-row">
+
+        <label for="BTCBase" class="col-form-label">BTC Base</label>
+        <div class="form-group col-md-3">
+          <input type="text" class="form-control" id="BTCBase" value=<%=pref.BTCBase %>>
+        </div>
+
+        <label for="downLimiteAlert" class="col-form-label">Down Limite Alert</label>
+        <div class="form-group col-md-1">
+          <input type="number" class="form-control" id="downLimiteAlert" min="1" max="99" value=<%=pref.downLimiteAlert
+            %>>%
+          <%=pref.downLimiteValue %>
+        </div>
+
+        <label for="topLimiteAlert" class="col-form-label">Top Limite Alert</label>
+        <div class="form-group col-md-1">
+          <input type="number" class="form-control" id="topLimiteAlert" min="1" max="99" value=<%=pref.downLimiteAlert
+            %>> %
+          <%=pref.topLimiteValue %>
+        </div>
+
+      </div>
+      <hr>
+      <div class="form-row">
+        <label for="mailRecipient" class="col-form-label">Mail Recipient</label>
+        <div class="form-group col-md-4">
+          <input type="text" class="form-control" id="mailRecipient" value=<%=pref.mailRecipient %>>
+        </div>
+
+        <label for="checkInterval" class="col-form-label">Check Interval</label>
+        <div class="form-group col-md-2">
+          <input type="number" class="form-control" id="checkInterval" min="1" max="59" value=<%=pref.checkInterval %>>
+        </div>
+      </div>
+
+      <hr>
+      <div class="form-row">
+        <button type="button" class="btn btn-primary col-sm-3">Update</button>
+        <button type="button" class="btn btn-info col-sm-3">Reload</button>
+      </div>
+    </form>
 
   </div>
 </body>

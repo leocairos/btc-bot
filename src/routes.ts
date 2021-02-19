@@ -22,10 +22,13 @@ router.get('/btc-bot/preferences', async (req, res, next) => {
       //mailRecipient: `${(configs.mailTo)}`,
       //downLimiteAlert: `${configs.downLimit}%`,
       downLimiteAlert: `${configs.downLimit}`,
-      //topLimiteAlert: `${configs.topLimit}%`,
-      topLimiteAlert: `${configs.topLimit}`,
-      BTCBase: `${formatter.format(Number(configs.btcBase))}`,
-      variation: `${variacao.toFixed(3)}%`,
+      downLimiteValue: `${formatter.format(Number(configs.downLimit) * Number(configs.btcBase) / 100)}`,
+      //topLimiteAlert: `${ configs.topLimit }% `,
+      topLimiteAlert: `${configs.topLimit} `,
+      topLimiteValue: `${formatter.format(configs.topLimit * Number(configs.btcBase) / 100)} `,
+      BTCBase: `${formatter.format(Number(configs.btcBase))} `,
+      variation: `${variacao.toFixed(3)}% `,
+      variationValue: `${formatter.format(Number(variacao * configs.btcBase / 100))}`,
       ticker: {
         tickerDate,
         high: maior,
@@ -35,7 +38,7 @@ router.get('/btc-bot/preferences', async (req, res, next) => {
     }
     return res.render('preferences', { pref });
   } catch (error) {
-    console.log(`${error}`);
+    console.log(`${error} `);
   }
 });
 
@@ -48,21 +51,21 @@ router.get('/btc-bot/health', async (req, res, next) => {
     res.json({
       message: `${process.env.MS_NAME} is up and running!`,
       checkInterval: `Every ${configs.intervalToCheck} seconds`,
-      mailRecipient: `${(configs.mailTo)?.substring(0, 4)}***`,
-      downLimiteAlert: `${configs.downLimit}%`,
-      topLimiteAlert: `${configs.topLimit}%`,
-      BTCBase: `${formatter.format(Number(configs.btcBase))}`,
+      mailRecipient: `${(configs.mailTo)?.substring(0, 4)}*** `,
+      downLimiteAlert: `${configs.downLimit}% `,
+      topLimiteAlert: `${configs.topLimit}% `,
+      BTCBase: `${formatter.format(Number(configs.btcBase))} `,
       ticker: {
         tickerDate,
         high: maior,
         low: menor,
         last: ultima,
-        variation: `${variacao.toFixed(3)}%`
+        variation: `${variacao.toFixed(3)}% `
       }
     })
 
   } catch (error) {
-    console.log(`${error}`);
+    console.log(`${error} `);
   }
 });
 
