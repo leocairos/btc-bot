@@ -42,17 +42,17 @@
 
 
     <h6>
-      <span class="badge badge-danger">
+      <span class="badge badge-danger col-sm-3 p-2 m-1">
         <i class="material-icons">arrow_downward</i>
         <%= pref.ticker.low %>
       </span>
 
-      <span class="badge badge-success">
+      <span class="badge badge-success col-sm-3 p-2 m-1">
         <i class="material-icons">arrow_upward</i>
         <%= pref.ticker.high %>
       </span>
 
-      <span class="badge badge-secondary">
+      <span class="badge badge-secondary col-sm-3 p-2 m-1">
         <i class="material-icons">watch_later</i>
         <%= pref.ticker.last %>
       </span>
@@ -63,15 +63,23 @@
 
     <p>
       <strong> Base Variation: </strong>
-      <span class="badge badge-light">
-        <i class="material-icons">compare_arrows</i>
-        <%= pref.variation %>
+      <% if (pref.variation>= 0) { %>
+        <span class="badge badge-light">
+          <%= pref.variation %>
 
-      </span>
-      <span class="badge badge-light">
-        <%=pref.variationValue %>
-      </span>
+        </span>
+        <span class="badge badge-light">
+          <%=pref.variationValue %>
+        </span>
+        <%} else {%>
+          <span class="badge badge-danger">
+            <%= pref.variation %>
 
+          </span>
+          <span class="badge badge-danger">
+            <%=pref.variationValue %>
+          </span>
+          <% }%>
     </p>
 
     <form>
@@ -112,8 +120,14 @@
 
       <hr>
       <div class="form-row">
-        <button type="button" class="btn btn-primary col-sm-3">Update</button>
-        <button type="button" class="btn btn-info col-sm-3">Reload</button>
+        <button type="button" class="btn btn-primary col-md-4 m-2">
+          <i class="material-icons">edit</i>
+          Update
+        </button>
+        <button type="button" class="btn btn-info col-md-4 m-2">
+          <i class="material-icons">refresh</i>
+          Reload
+        </button>
       </div>
     </form>
 
