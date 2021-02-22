@@ -74,18 +74,18 @@ router.get('/btc-bot/health', async (req, res, next) => {
   }
 });
 
-// router.post('/btc-bot/preferences', ensureKeyAuthorization, async (req, res, next) => {
-//   const { interval, topLimit, downLimit, email, btcBase } = req.body;
-//   const result = await insertData(interval, email, topLimit, downLimit, btcBase);
-//   return res.json(result);
-// })
-
-router.post('/btc-bot/preferences', async (req, res, next) => {
-  const { pref, checkInterval, topLimit, downLimit, email, btcBase, password } = req.body;
-  //const result = await insertData(checkInterval, email, topLimit, downLimit, btcBase);
-  console.log({ checkInterval, topLimit, downLimit, email, btcBase, password });
-  console.log(JSON.stringify(req.body));
-  return res.json({ checkInterval, topLimit, downLimit, email, btcBase, password });
+router.post('/btc-bot/preferences', ensureKeyAuthorization, async (req, res, next) => {
+  const { interval, topLimit, downLimit, email, btcBase } = req.body;
+  const result = await insertData(interval, email, topLimit, downLimit, btcBase);
+  return res.json(result);
 })
+
+// router.post('/btc-bot/preferences', async (req, res, next) => {
+//   const { pref, checkInterval, topLimit, downLimit, email, btcBase, password } = req.body;
+//   //const result = await insertData(checkInterval, email, topLimit, downLimit, btcBase);
+//   console.log({ checkInterval, topLimit, downLimit, email, btcBase, password });
+//   console.log(JSON.stringify(req.body));
+//   return res.json({ checkInterval, topLimit, downLimit, email, btcBase, password });
+// })
 
 export default router;
