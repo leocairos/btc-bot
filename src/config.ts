@@ -2,15 +2,15 @@ import { getLastData, IPreference } from './model';
 
 export const config = async (): Promise<IPreference> => {
   const lastData = await getLastData();
-  if (lastData?.lReturn) {
+  if (lastData?.rows[0]) {
     return {
       //intervalToCheck: lastData.rows[0].intervalToCheck,
       intervalToCheck: parseInt(`${process.env.INTERVAL_TO_CHECK}`),
-      mailTo: lastData.rows[0].mailTo,
-      topLimit: lastData.rows[0].topLimit,
-      downLimit: lastData.rows[0].downLimit,
-      btcBase: lastData.rows[0].btcBase,
-      createdAt: lastData.rows[0].createdAt
+      mailTo: lastData.rows[0]?.mailTo,
+      topLimit: lastData.rows[0]?.topLimit,
+      downLimit: lastData.rows[0]?.downLimit,
+      btcBase: lastData.rows[0]?.btcBase,
+      createdAt: lastData.rows[0]?.createdAt
     } as IPreference;
 
   } else {

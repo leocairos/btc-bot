@@ -97,6 +97,8 @@ const checkAndAlert = async (originalTicker: IOriginalTicker) => {
   console.log(`   Limite Top: ${(limiteVarTop * 100).toFixed(2)}%.`);
   console.log(`   Limite Dow: ${(limiteVarDow * 100).toFixed(2)}%.`);
 
+  const lastConfig = await config();
+
   const alertTop = ((variacao >= 0) && (variacao >= limiteVarTop * 100));
   const alertDow = ((variacao < 0) && (variacao <= limiteVarDow * -100));
 
@@ -108,6 +110,18 @@ const checkAndAlert = async (originalTicker: IOriginalTicker) => {
       : 'BTC-Bot Alert';
 
   if (alertTop) {
+    const newPref = {
+      interval: intervalToCheck,
+      topLimit: 5,//limiteVarTop * 100,
+      downLimit: 3,//limiteVarDow * 100,
+      email: mailTo,
+      btcBase: BTCBase * (1 + variacao / 100)
+    }
+    await insertData(newPref.interval, newPref.email,
+      newPref.topLimit, newPref.downLimit, newPref.btcBase)
+  }
+
+  if (alertDow) {
     const newPref = {
       interval: intervalToCheck,
       topLimit: 5,//limiteVarTop * 100,

@@ -1,7 +1,8 @@
 import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
 
-const dbFile = './dbBTCbot.sqlite';
+//const dbFile = './dbBTCbot.sqlite';
+const dbFile = `${process.env.DB_FILE}`;
 
 async function openDb() {
   sqlite3.verbose();
