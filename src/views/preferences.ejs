@@ -9,15 +9,6 @@
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--
@@ -42,66 +33,62 @@
 
 
     <h6>
-      <span class="badge badge-danger col-sm-3 p-2 m-1">
+      <span class="badge badge-danger col-md-3 p-2 m-1">
         <i class="material-icons">arrow_downward</i>
-        <%= pref.ticker.low %>
+        <%= new Intl.NumberFormat('pt-BR', { style: 'currency' , currency: 'BRL' }).format(pref.ticker.low) %>
       </span>
 
-      <span class="badge badge-success col-sm-3 p-2 m-1">
+      <span class="badge badge-success col-md-3 p-2 m-1">
         <i class="material-icons">arrow_upward</i>
-        <%= pref.ticker.high %>
+        <%= new Intl.NumberFormat('pt-BR', { style: 'currency' , currency: 'BRL' }).format(pref.ticker.high) %>
       </span>
 
-      <span class="badge badge-secondary col-sm-3 p-2 m-1">
+      <span class="badge badge-secondary col-md-4 p-2 m-1">
         <i class="material-icons">watch_later</i>
-        <%= pref.ticker.last %>
+        <%= new Intl.NumberFormat('pt-BR', { style: 'currency' , currency: 'BRL' }).format(pref.ticker.last) %>
       </span>
 
     </h6>
 
     <hr>
 
-    <p>
-      <strong> Base Variation: </strong>
-      <% if (pref.variation>= 0) { %>
-        <span class="badge badge-light">
-          <%= pref.variation %>
+    <div class="form-row">
+      <div class="col-sm-5">
+        <strong> Change: </strong>
 
+        <span
+          class="<%=(pref.variation>= 0 && pref.variationValue >= 0) ? 'badge badge-success' : 'badge badge-danger'%>">
+          <%= pref.variation %> %
         </span>
-        <span class="badge badge-light">
-          <%=pref.variationValue %>
+        <span
+          class="<%=(pref.variation>= 0 && pref.variationValue >= 0) ? 'badge badge-success' : 'badge badge-danger'%>">
+          <%= new Intl.NumberFormat('pt-BR', { style: 'currency' , currency: 'BRL' }).format(pref.variationValue) %>
         </span>
-        <%} else {%>
-          <span class="badge badge-danger">
-            <%= pref.variation %>
+      </div>
 
-          </span>
-          <span class="badge badge-danger">
-            <%=pref.variationValue %>
-          </span>
-          <% }%>
-    </p>
+      <label for="BTCBase" class="col-form-label">BTC Base</label>
+      <div class="form-group col-sm-5">
+        <input type="text" class="form-control" id="BTCBase" value=<%=new Intl.NumberFormat('pt-BR', { style: 'currency'
+          , currency: 'BRL' }).format(pref.BTCBase) %>>
+      </div>
 
-    <form>
+    </div>
+
+    <form method="POST" action="./preferences">
       <div class="form-row">
 
-        <label for="BTCBase" class="col-form-label">BTC Base</label>
-        <div class="form-group col-md-3">
-          <input type="text" class="form-control" id="BTCBase" value=<%=pref.BTCBase %>>
-        </div>
-
-        <label for="downLimiteAlert" class="col-form-label">Down Limite Alert</label>
-        <div class="form-group col-md-1">
+        <label for="downLimiteAlert" class="col-form-label">Down Limite Alert(%)</label>
+        <div class="form-group col-sm-2">
           <input type="number" class="form-control" id="downLimiteAlert" min="1" max="99" value=<%=pref.downLimiteAlert
-            %>>%
-          <%=pref.downLimiteValue %>
+            %>>
+          <%= new Intl.NumberFormat('pt-BR', { style: 'currency' , currency: 'BRL' }).format(pref.downLimiteValue) %>
         </div>
 
-        <label for="topLimiteAlert" class="col-form-label">Top Limite Alert</label>
-        <div class="form-group col-md-1">
-          <input type="number" class="form-control" id="topLimiteAlert" min="1" max="99" value=<%=pref.downLimiteAlert
-            %>> %
-          <%=pref.topLimiteValue %>
+        <label for="topLimiteAlert" class="col-form-label">Top Limite Alert (%)</label>
+        <div class="form-group col-sm-2">
+          <input type="number" class="form-control" id="topLimiteAlert" min="1" max="99" value=<%=pref.topLimiteAlert
+            %>>
+          <%= new Intl.NumberFormat('pt-BR', { style: 'currency' , currency: 'BRL' }).format(pref.topLimiteValue) %>
         </div>
 
       </div>
@@ -112,22 +99,28 @@
           <input type="text" class="form-control" id="mailRecipient" value=<%=pref.mailRecipient %>>
         </div>
 
-        <label for="checkInterval" class="col-form-label">Check Interval</label>
+        <label for="checkInterval" class="col-form-label">Check Interval (in seconds)</label>
         <div class="form-group col-md-2">
-          <input type="number" class="form-control" id="checkInterval" min="1" max="59" value=<%=pref.checkInterval %>>
+          <input type="number" class="form-control" name="checkInterval" id="checkInterval" min="1" max="59"
+            value=<%=pref.checkInterval %>>
         </div>
+      </div>
+
+      <div class="form-row">
+        <label for="password" class="col-form-label">Password</label>
+        <div class="form-group col-md-4">
+          <input type="password" class="form-control" id="password">
+        </div>
+
       </div>
 
       <hr>
       <div class="form-row">
-        <button type="button" class="btn btn-primary col-md-4 m-2">
+        <button type="submit" class="btn btn-primary col-md-4 m-2">
           <i class="material-icons">edit</i>
           Update
         </button>
-        <button type="button" class="btn btn-info col-md-4 m-2">
-          <i class="material-icons">refresh</i>
-          Reload
-        </button>
+
       </div>
     </form>
 

@@ -60,9 +60,12 @@ export const formatter = new Intl.NumberFormat('pt-BR', {
 
 export const dataTicker = (parms: IOriginalTicker) => {
   const { high, low, last, date } = parms;
-  const maior = formatter.format(Number(high));
-  const menor = formatter.format(Number(low));
-  const ultima = formatter.format(Number(last));
+  // const maior = formatter.format(Number(high));
+  // const menor = formatter.format(Number(low));
+  // const ultima = formatter.format(Number(last));
+  const maior = Number(high).toFixed(2);
+  const menor = Number(low).toFixed(2);
+  const ultima = Number(last).toFixed(2);
   const tickerDate = new Date(date * 1000).toUTCString();
 
   const variacao = calculateVariation(Number(last));

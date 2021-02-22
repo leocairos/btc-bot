@@ -22,13 +22,18 @@ router.get('/btc-bot/preferences', async (req, res, next) => {
       //mailRecipient: `${(configs.mailTo)}`,
       //downLimiteAlert: `${configs.downLimit}%`,
       downLimiteAlert: `${configs.downLimit}`,
-      downLimiteValue: `${formatter.format(Number(configs.downLimit) * Number(configs.btcBase) / 100)}`,
+      //downLimiteValue: `${formatter.format(Number(configs.downLimit) * Number(configs.btcBase) / 100)}`,
+      downLimiteValue: `${(Number(configs.downLimit) * Number(configs.btcBase) / 100).toFixed(2)}`,
       //topLimiteAlert: `${ configs.topLimit }% `,
       topLimiteAlert: `${configs.topLimit} `,
-      topLimiteValue: `${formatter.format(configs.topLimit * Number(configs.btcBase) / 100)} `,
-      BTCBase: `${formatter.format(Number(configs.btcBase))} `,
-      variation: `${variacao.toFixed(3)}% `,
-      variationValue: `${formatter.format(Number(variacao * configs.btcBase / 100))}`,
+      //topLimiteValue: `${formatter.format(configs.topLimit * Number(configs.btcBase) / 100)}`,
+      topLimiteValue: `${(configs.topLimit * Number(configs.btcBase) / 100).toFixed(2)} `,
+      //BTCBase: `${formatter.format(Number(configs.btcBase))}`,
+      BTCBase: `${(Number(configs.btcBase)).toFixed(2)}`,
+      //variation: `${variacao.toFixed(3)}% `,
+      variation: `${variacao.toFixed(3)}`,
+      //variationValue: `${formatter.format(Number(variacao * configs.btcBase / 100))}`,
+      variationValue: `${(Number(variacao * configs.btcBase / 100)).toFixed(2)}`,
       ticker: {
         tickerDate,
         high: maior,
@@ -69,10 +74,18 @@ router.get('/btc-bot/health', async (req, res, next) => {
   }
 });
 
-router.post('/btc-bot/preferences', ensureKeyAuthorization, async (req, res, next) => {
-  const { interval, topLimit, downLimit, email, btcBase } = req.body;
-  const result = await insertData(interval, email, topLimit, downLimit, btcBase);
-  return res.json(result);
+// router.post('/btc-bot/preferences', ensureKeyAuthorization, async (req, res, next) => {
+//   const { interval, topLimit, downLimit, email, btcBase } = req.body;
+//   const result = await insertData(interval, email, topLimit, downLimit, btcBase);
+//   return res.json(result);
+// })
+
+router.post('/btc-bot/preferences', async (req, res, next) => {
+  const { pref, checkInterval, topLimit, downLimit, email, btcBase, password } = req.body;
+  //const result = await insertData(checkInterval, email, topLimit, downLimit, btcBase);
+  console.log({ checkInterval, topLimit, downLimit, email, btcBase, password });
+  console.log(JSON.stringify(req.body));
+  return res.json({ checkInterval, topLimit, downLimit, email, btcBase, password });
 })
 
 export default router;
